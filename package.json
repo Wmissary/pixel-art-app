@@ -1,0 +1,22 @@
+{
+  "name": "pixelcraft",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wmissary/pixel-art-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wmissary/pixel-art-app/issues"
+  },
+  "homepage": "https://github.com/Wmissary/pixel-art-app#readme",
+  "devDependencies": {
+    "eslint": "^8.26.0"
+  }
+}
