@@ -21,4 +21,3 @@ Pixel craft is a Pixel Art editor for the web in vanilla JavaScript.
 - [ ] Export to SVG
 - [ ] Save
 - [ ] Load
-

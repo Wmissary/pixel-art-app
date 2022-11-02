@@ -75,6 +75,7 @@ header {
   position: fixed;
   top: 35px;
   width: 200px;
+  z-index: 1;
 }
 
 .nav-submenu-list {
