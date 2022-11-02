@@ -77,7 +77,7 @@
       </nav>
     </header>
     <main>
-      <aside id="tools">
+      <section id="tools">
         <ul id="tools-ul">
           <!--replace with icons-->
           <li class="tools-list">
@@ -90,6 +90,33 @@
             <i class="fa-solid fa-fill-drip tools-icon"></i>
           </li>
         </ul>
+      </section>
+      <aside id="aside">
+        <article id="color-palette">
+          <i class="fa-solid fa-palette color-palette-icon"></i>
+          <div id="color-input-container">
+            <label for="color">Color: </label>
+            <input type="color" name="color" id="color" />
+          </div>
+          <div id="color-selected-container">
+            <i class="fa-solid fa-plus" id="color-selected-add"></i>
+          </div>
+        </article>
+        <article id="layers">
+          <i class="fa-solid fa-layer-group layers-icon"></i>
+          <ul id="layers-ul">
+            <li class="layers-list">
+              <div>
+                <span class="layers-name">Layer 1</span>
+              </div>
+              <div>
+                <i class="fa-solid fa-eye layer-icon"></i>
+                <i class="fa-solid fa-lock layer-icon"></i>
+              </div>
+            </li>
+          </ul>
+          <i class="fa-solid fa-plus" id="layers-add"></i>
+        </article>
       </aside>
     </main>
     <script src="main.js"></script>
