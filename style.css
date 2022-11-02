@@ -88,7 +88,31 @@ header {
   border: #fffffd 1px solid;
 }
 
-/* section */
+/* section canvas */
+
+main {
+  position: relative;
+  height: calc(100vh - 35px);
+}
+
+#canvas-container {
+  height: 100%;
+}
+
+#canvas {
+  position: absolute;
+  background-color: var(--secondary-backgroud-color);
+  height: 550px;
+  width: 550px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+}
+
+/* popup */
+
+/* section tools*/
 
 #tools {
   background-color: var(--secondary-backgroud-color);
