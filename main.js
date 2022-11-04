@@ -50,6 +50,6 @@ canvas.onmousemove = (e) => {
   }
 };
 
-canvas.onmouseup = () => {
+document.onmouseup = () => {
   click = false;
 };
