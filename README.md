@@ -30,4 +30,7 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 ## How to use
 
 Go to => [pixel-app](https://wmissary.github.io/pixel-art-app/)
+
+Select a color from the palette
+
 Use mouse1 to draw and mouse2 to erase.
