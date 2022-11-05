@@ -34,3 +34,5 @@ Go to => [pixel-app](https://wmissary.github.io/pixel-art-app/)
 Select a color from the palette
 
 Use mouse1 to draw and mouse2 to erase.
+
+Use mouse wheel click to clear the canvas.
