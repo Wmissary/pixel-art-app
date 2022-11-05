@@ -9,8 +9,8 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | Features | Status | Description | Note |
 | ----------- | ----------- | ----------- | ----------- |
 | Select canvas size | :x: | | |
-| Draw | MVP | Draw pixel on canvas | WIP |
-| Erase | :x: | Erase pixel on canvas ||
+| Draw | MVP | Draw pixel on canvas | WIP press mouse1 to draw |
+| Erase | MVP | Erase pixel on canvas | WIP press mouse2 to erase |
 | Fill | :x: | Fill pixel on canvas ||
 | Clear | :x: | Clear canvas ||
 | Layers| :x: | Add layers management ||
@@ -27,4 +27,7 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | Color palette | MVP | select color | Rework needed when favorite color management is done |
 | Favorite color | :x: | Add color to favorite ||
 
-[TRY-IT](https://wmissary.github.io/pixel-art-app/)
+## How to use
+
+Go to => [pixel-app](https://wmissary.github.io/pixel-art-app/)
+Use mouse1 to draw and mouse2 to erase.
