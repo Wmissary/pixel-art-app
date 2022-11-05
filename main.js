@@ -32,14 +32,16 @@ canvas.onmousedown = (e) => {
 
   const tile = new Tile({ x, y, color });
 
-  console.log(e.button);
-
   if (e.buttons === 1) {
     tile.draw(ctx);
   }
 
   if (e.buttons === 2) {
     tile.erase(ctx);
+  }
+
+  if (e.buttons === 4) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
   click = true;
@@ -58,8 +60,6 @@ canvas.onmousemove = (e) => {
     );
 
     const tile = new Tile({ x, y, color });
-
-    console.log(e);
 
     if (e.buttons === 1) {
       tile.draw(ctx);
