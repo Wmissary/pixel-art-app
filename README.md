@@ -12,7 +12,7 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | Draw | MVP | Draw pixel on canvas | WIP press mouse1 to draw |
 | Erase | MVP | Erase pixel on canvas | WIP press mouse2 to erase |
 | Fill | :x: | Fill pixel on canvas ||
-| Clear | :x: | Clear canvas ||
+| Clear | MVP | Clear canvas | WIP press mouse wheel click to clear canvas|
 | Layers| :x: | Add layers management ||
 | Undo | :x: | Undo last action ||
 | Redo | :x: | Redo last action ||
