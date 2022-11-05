@@ -10,7 +10,7 @@ class Tile {
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
-  clear(ctx) {
+  erase(ctx) {
     ctx.clearRect(this.x, this.y, this.width, this.height);
   }
 }
@@ -21,16 +21,26 @@ const ctx = canvas.getContext("2d");
 let click = false;
 
 canvas.onmousedown = (e) => {
-  const color = document.getElementById("color").value;
-
   const x = Math.floor(
     e.offsetX / (parseInt(getComputedStyle(canvas).width) / 16)
   );
   const y = Math.floor(
     e.offsetY / (parseInt(getComputedStyle(canvas).width) / 16)
   );
+
+  const color = document.getElementById("color").value;
+
   const tile = new Tile({ x, y, color });
-  tile.draw(ctx);
+
+  console.log(e.button);
+
+  if (e.buttons === 1) {
+    tile.draw(ctx);
+  }
+
+  if (e.buttons === 2) {
+    tile.erase(ctx);
+  }
 
   click = true;
 };
@@ -42,11 +52,22 @@ canvas.onmousemove = (e) => {
     const x = Math.floor(
       e.offsetX / (parseInt(getComputedStyle(canvas).width) / 16)
     );
+
     const y = Math.floor(
       e.offsetY / (parseInt(getComputedStyle(canvas).width) / 16)
     );
+
     const tile = new Tile({ x, y, color });
-    tile.draw(ctx);
+
+    console.log(e);
+
+    if (e.buttons === 1) {
+      tile.draw(ctx);
+    }
+
+    if (e.buttons === 2) {
+      tile.erase(ctx);
+    }
   }
 };
 
