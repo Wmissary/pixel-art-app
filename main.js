@@ -59,11 +59,11 @@ canvas.onmousedown = (e) => {
 
   const tile = new Tile({ x, y, color });
 
-  if (mode === "draw" && e.button !== 4) {
+  if (mode === "draw" && e.buttons !== 4) {
     tile.draw(ctx);
   }
 
-  if (mode === "erase" && e.button !== 4) {
+  if (mode === "erase" && e.buttons !== 4) {
     tile.erase(ctx);
   }
 
@@ -88,11 +88,11 @@ canvas.onmousemove = (e) => {
 
     const tile = new Tile({ x, y, color });
 
-    if (mode === "draw" && e.button !== 4) {
+    if (mode === "draw" && e.buttons !== 4) {
       tile.draw(ctx);
     }
 
-    if (mode === "erase" && e.button !== 4) {
+    if (mode === "erase" && e.buttons !== 4) {
       tile.erase(ctx);
     }
   }
