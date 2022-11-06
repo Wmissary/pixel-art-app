@@ -135,6 +135,11 @@ main {
   background-color: var(--hover-backgroud-color);
 }
 
+.tool-list-selected {
+  border: #fffffd 1px solid;
+  background-color: var(--hover-backgroud-color);
+}
+
 .tools-icon {
   font-size: 34px;
 }

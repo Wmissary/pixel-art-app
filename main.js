@@ -15,6 +15,33 @@ class Tile {
   }
 }
 
+const drawButton = document.getElementById("draw");
+const eraseButton = document.getElementById("erase");
+
+let mode = "none";
+
+drawButton.onclick = () => {
+  if (mode === "draw") {
+    mode = "none";
+    drawButton.classList.remove("tool-list-selected");
+  } else {
+    eraseButton.classList.remove("tool-list-selected");
+    drawButton.classList.add("tool-list-selected");
+    mode = "draw";
+  }
+};
+
+eraseButton.onclick = () => {
+  if (mode === "erase") {
+    eraseButton.classList.remove("tool-list-selected");
+    mode = "none";
+  } else {
+    drawButton.classList.remove("tool-list-selected");
+    eraseButton.classList.add("tool-list-selected");
+    mode = "erase";
+  }
+};
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -32,11 +59,11 @@ canvas.onmousedown = (e) => {
 
   const tile = new Tile({ x, y, color });
 
-  if (e.buttons === 1) {
+  if (mode === "draw" && e.button !== 4) {
     tile.draw(ctx);
   }
 
-  if (e.buttons === 2) {
+  if (mode === "erase" && e.button !== 4) {
     tile.erase(ctx);
   }
 
@@ -61,11 +88,11 @@ canvas.onmousemove = (e) => {
 
     const tile = new Tile({ x, y, color });
 
-    if (e.buttons === 1) {
+    if (mode === "draw" && e.button !== 4) {
       tile.draw(ctx);
     }
 
-    if (e.buttons === 2) {
+    if (mode === "erase" && e.button !== 4) {
       tile.erase(ctx);
     }
   }
