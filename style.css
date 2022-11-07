@@ -168,19 +168,31 @@ main {
 
 #color-input-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   margin: 10px 20px 0 20px;
 }
 
 #color-selected-container {
   margin: 10px 20px;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-gap: 4px;
 }
 
 #color-selected-add {
   border: 1px solid var(--icons-border);
   cursor: pointer;
   padding: 5px;
+  width: 26px;
+}
+
+.color-favorite {
+  border: 1px solid var(--icons-border);
+  cursor: pointer;
+  padding: 5px;
+  width: 26px;
+  height: 28px;
 }
 
 #color-selected-add:hover {

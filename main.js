@@ -15,8 +15,73 @@ class Tile {
   }
 }
 
+class Colors {
+  #favorite;
+  #current;
+  constructor({ favorite = new Set([]), current }) {
+    this.#favorite = favorite;
+    this.#current = current;
+  }
+  get favorite() {
+    return this.#favorite;
+  }
+  get current() {
+    return this.#current;
+  }
+  set current(color) {
+    this.#current = color;
+  }
+
+  add(color) {
+    this.#favorite.add(color);
+  }
+  remove(color) {
+    this.#favorite.delete(color);
+  }
+}
+
+// Tools
 const drawButton = document.getElementById("draw");
 const eraseButton = document.getElementById("erase");
+
+// Color
+const favoriteColorsContainer = document.getElementById(
+  "color-selected-container"
+);
+const colorPaletteInput = document.getElementById("color");
+const addColorToFavorites = document.getElementById("color-selected-add");
+
+const rgb2hex = (rgb) =>
+  `#${rgb
+    .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
+    .slice(1)
+    .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
+    .join("")}`;
+
+const colors = new Colors({
+  current: colorPaletteInput.value,
+});
+
+colorPaletteInput.onchange = (e) => {
+  colors.current = e.target.value;
+};
+
+addColorToFavorites.onclick = () => {
+  colors.add(colors.current);
+  const color = document.createElement("div");
+  color.classList.add("color-favorite");
+  color.style.backgroundColor = colors.current;
+  favoriteColorsContainer.prepend(color);
+  color.onclick = () => {
+    colors.current = rgb2hex(color.style.backgroundColor);
+    colorPaletteInput.value = colors.current;
+  };
+  color.oncontextmenu = (e) => {
+    e.preventDefault();
+    colors.remove(colors.current);
+    color.remove();
+  };
+};
 
 let mode = "none";
 
@@ -55,9 +120,7 @@ canvas.onmousedown = (e) => {
     e.offsetY / (parseInt(getComputedStyle(canvas).width) / 16)
   );
 
-  const color = document.getElementById("color").value;
-
-  const tile = new Tile({ x, y, color });
+  const tile = new Tile({ x, y, color: colors.current });
 
   if (mode === "draw" && e.buttons !== 4) {
     tile.draw(ctx);
@@ -76,8 +139,6 @@ canvas.onmousedown = (e) => {
 
 canvas.onmousemove = (e) => {
   if (click) {
-    const color = document.getElementById("color").value;
-
     const x = Math.floor(
       e.offsetX / (parseInt(getComputedStyle(canvas).width) / 16)
     );
@@ -86,7 +147,7 @@ canvas.onmousemove = (e) => {
       e.offsetY / (parseInt(getComputedStyle(canvas).width) / 16)
     );
 
-    const tile = new Tile({ x, y, color });
+    const tile = new Tile({ x, y, color: colors.current });
 
     if (mode === "draw" && e.buttons !== 4) {
       tile.draw(ctx);
