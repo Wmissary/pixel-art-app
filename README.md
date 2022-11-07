@@ -9,10 +9,10 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | Features | Status | Description | Note |
 | ----------- | ----------- | ----------- | ----------- |
 | Select canvas size | :x: | | |
-| Draw | MVP | Draw pixel on canvas | Click on brush icon to select draw mode |
-| Erase | MVP | Erase pixel on canvas | Click on rubber icon to select erase mode |
+| Draw | MVF | Draw pixel on canvas | Click on brush icon to select draw mode |
+| Erase | MVF | Erase pixel on canvas | Click on rubber icon to select erase mode |
 | Fill | :x: | Fill pixel on canvas ||
-| Clear | MVP | Clear canvas | WIP press mouse wheel click to clear canvas |
+| Clear | MVF | Clear canvas | WIP press mouse wheel click to clear canvas |
 | Layers| :x: | Add layers management ||
 | Undo | :x: | Undo last action ||
 | Redo | :x: | Redo last action ||
@@ -24,8 +24,8 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | Save | :x: | Save canvas ||
 | Load | :x: | Load canvas ||
 | Color picker | :x: | Pick color from canvas ||
-| Color palette | MVP | select color | Rework needed when favorite color management is done |
-| Favorite color | :x: | Add color to favorite ||
+| Color palette | MVF | select color | Rework needed when favorite color management is done |
+| Favorite color | MVF | Add or Delete color from favorite | Clic on add button to add current color to favorite or right click on it to delete it |
 
 ## How to use
 
