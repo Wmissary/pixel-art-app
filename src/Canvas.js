@@ -22,8 +22,6 @@ export default class Canvas {
 
   clickEvent(event, colors) {
     if (event.buttons === 1) {
-      this.click = true;
-
       const { x, y } = getCoordinates(event, this.element, 16);
       const tile = new Tile({ x, y, color: colors.current });
       if (this.currentTool === kCanvasAvailableTools.draw) {

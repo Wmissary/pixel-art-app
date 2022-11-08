@@ -3,7 +3,7 @@ import Canvas from "./src/Canvas.js";
 import { rgbToHex } from "./src/utils.js";
 import { kCanvasAvailableTools } from "./src/config.js";
 
-// Color
+// Color Management
 const favoriteColorsContainer = document.getElementById(
   "color-selected-container"
 );
@@ -14,8 +14,8 @@ const colors = new Colors({
   current: colorPaletteInput.value,
 });
 
-colorPaletteInput.onchange = (e) => {
-  colors.current = e.target.value;
+colorPaletteInput.onchange = (event) => {
+  colors.current = event.target.value;
 };
 
 addColorToFavorites.onclick = () => {
@@ -24,10 +24,12 @@ addColorToFavorites.onclick = () => {
   color.classList.add("color-favorite");
   color.style.backgroundColor = colors.current;
   favoriteColorsContainer.prepend(color);
+
   color.onclick = () => {
     colors.current = rgbToHex(color.style.backgroundColor);
     colorPaletteInput.value = colors.current;
   };
+
   color.oncontextmenu = (e) => {
     e.preventDefault();
     colors.remove(colors.current);
@@ -35,7 +37,7 @@ addColorToFavorites.onclick = () => {
   };
 };
 
-// Tools
+// Tools Management
 const canvas = new Canvas(document.getElementById("canvas"));
 const toolsList = document.querySelectorAll(".tools-list");
 
@@ -56,9 +58,10 @@ for (const tool of toolsList) {
   };
 }
 
+// Click Event Management
 canvas.element.onmousedown = (event) => {
   canvas.clickEvent(event, colors);
-
+  canvas.click = true;
   if (event.buttons === 4) {
     canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
