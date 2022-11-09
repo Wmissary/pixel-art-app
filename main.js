@@ -15,24 +15,24 @@ const colors = new Colors({
 });
 
 colorPaletteInput.onchange = (event) => {
-  colors.current = event.target.value;
+  colors.currentColor = event.target.value;
 };
 
 addColorToFavorites.onclick = () => {
-  colors.add(colors.current);
+  colors.add(colors.currentColor);
   const color = document.createElement("div");
   color.classList.add("color-favorite");
-  color.style.backgroundColor = colors.current;
+  color.style.backgroundColor = colors.currentColor;
   favoriteColorsContainer.prepend(color);
 
   color.onclick = () => {
-    colors.current = rgbToHex(color.style.backgroundColor);
-    colorPaletteInput.value = colors.current;
+    colors.currentColor = rgbToHex(color.style.backgroundColor);
+    colorPaletteInput.value = colors.currentColor;
   };
 
   color.oncontextmenu = (e) => {
     e.preventDefault();
-    colors.remove(colors.current);
+    colors.remove(colors.currentColor);
     color.remove();
   };
 };
