@@ -2,6 +2,13 @@ export default class Colors {
   #favorite;
   #currentColor;
   constructor({ favorite = new Set([]), currentColor }) {
+    if (currentColor === undefined)
+      throw new Error("Current color is undefined");
+    if (!(favorite instanceof Set))
+      throw new Error("Favorite colors is not a Set");
+    if (typeof currentColor !== "string")
+      throw new Error("Current color is not a string");
+
     this.#favorite = favorite;
     this.#currentColor = currentColor;
   }
@@ -12,6 +19,9 @@ export default class Colors {
     return this.#currentColor;
   }
   set currentColor(color) {
+    if (typeof color !== "string") throw new Error("Color is not a string");
+    if (color === undefined) throw new Error("Color is undefined");
+
     this.#currentColor = color;
   }
 

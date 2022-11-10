@@ -4,6 +4,10 @@ import { kCanvasAvailableTools } from "./config.js";
 
 export default class Canvas {
   constructor(canvas) {
+    if (canvas === undefined) throw new Error("Canvas is undefined");
+    if (!(canvas instanceof HTMLCanvasElement))
+      throw new Error("Canvas is not an HTMLCanvasElement");
+
     this.element = canvas;
     this.ctx = canvas.getContext("2d");
     this.width = canvas.width;

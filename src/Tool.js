@@ -23,6 +23,8 @@ export default class Tool {
     return this.#selected;
   }
   set selected(value) {
+    if (value === undefined)
+      throw new Error("Tool selected value is undefined");
     if (typeof value !== "boolean")
       throw new Error("Tool selected value is not a boolean");
     this.#selected = value;
