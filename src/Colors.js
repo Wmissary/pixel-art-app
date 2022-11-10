@@ -21,7 +21,6 @@ export default class Colors {
   set currentColor(color) {
     if (typeof color !== "string") throw new Error("Color is not a string");
     if (color === undefined) throw new Error("Color is undefined");
-
     this.#currentColor = color;
   }
 

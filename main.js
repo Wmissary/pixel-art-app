@@ -17,7 +17,6 @@ const colors = new Colors({
 
 colorPaletteInput.onchange = (event) => {
   colors.currentColor = event.target.value;
-  console.log(colors.currentColor);
 };
 
 addColorToFavorites.onclick = () => {
