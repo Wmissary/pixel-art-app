@@ -1,5 +1,6 @@
 import Colors from "./src/Colors.js";
 import Canvas from "./src/Canvas.js";
+import Tool from "./src/Tool.js";
 import { rgbToHex } from "./src/utils.js";
 import { kCanvasAvailableTools } from "./src/config.js";
 
@@ -11,11 +12,12 @@ const colorPaletteInput = document.getElementById("color");
 const addColorToFavorites = document.getElementById("color-selected-add");
 
 const colors = new Colors({
-  current: colorPaletteInput.value,
+  currentColor: colorPaletteInput.value,
 });
 
 colorPaletteInput.onchange = (event) => {
   colors.currentColor = event.target.value;
+  console.log(colors.currentColor);
 };
 
 addColorToFavorites.onclick = () => {
@@ -39,20 +41,20 @@ addColorToFavorites.onclick = () => {
 
 // Tools Management
 const canvas = new Canvas(document.getElementById("canvas"));
+const kToolsArray = [];
 const toolsList = document.querySelectorAll(".tools-list");
 
 for (const tool of toolsList) {
+  const toolInstance = new Tool(kCanvasAvailableTools[tool.id], tool);
+  kToolsArray.push(toolInstance);
+
   tool.onclick = () => {
-    if (canvas.currentTool === kCanvasAvailableTools[tool.id]) {
-      canvas.currentTool = kCanvasAvailableTools.none;
-      tool.classList.remove("tool-list-selected");
-    } else {
-      canvas.currentTool = kCanvasAvailableTools[tool.id];
-      tool.classList.add("tool-list-selected");
-      for (const otherTool of toolsList) {
-        if (otherTool !== tool) {
-          otherTool.classList.remove("tool-list-selected");
-        }
+    toolInstance.click();
+    canvas.currentTool = toolInstance.name;
+    for (const tool of kToolsArray) {
+      if (tool !== toolInstance) {
+        tool.selected = false;
+        tool.update();
       }
     }
   };
@@ -60,7 +62,7 @@ for (const tool of toolsList) {
 
 // Click Event Management
 canvas.element.onmousedown = (event) => {
-  canvas.clickEvent(event, colors);
+  canvas.clickEvent(event, colors.currentColor);
   canvas.click = true;
   if (event.buttons === 4) {
     canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -69,7 +71,7 @@ canvas.element.onmousedown = (event) => {
 
 canvas.element.onmousemove = (event) => {
   if (canvas.click) {
-    canvas.clickEvent(event, colors);
+    canvas.clickEvent(event, colors.currentColor);
   }
 };
 

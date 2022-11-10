@@ -20,10 +20,10 @@ export default class Canvas {
     tile.erase(this.ctx);
   }
 
-  clickEvent(event, colors) {
+  clickEvent(event, color) {
     if (event.buttons === 1) {
       const { x, y } = getCoordinates(event, this.element, 16);
-      const tile = new Tile({ x, y, color: colors.current });
+      const tile = new Tile({ x, y, color });
       if (this.currentTool === kCanvasAvailableTools.draw) {
         this.drawTile(tile);
       }
