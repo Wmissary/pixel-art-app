@@ -1,5 +1,3 @@
-import Tile from "./Tile.js";
-import { getCoordinates } from "./utils.js";
 import { kCanvasAvailableTools } from "./config.js";
 
 export default class Canvas {
@@ -9,31 +7,44 @@ export default class Canvas {
       throw new Error("Canvas is not an HTMLCanvasElement");
 
     this.element = canvas;
-    this.ctx = canvas.getContext("2d");
-    this.width = canvas.width;
-    this.height = canvas.height;
+    this.ctx = this.element.getContext("2d");
 
-    this.currentTool = kCanvasAvailableTools.none;
+    this.width = this.element.width;
+    this.height = this.element.height;
+
+    this.computedWidth = parseInt(getComputedStyle(this.element).width);
+    this.computedHeight = parseInt(getComputedStyle(this.element).height);
+
+    this.currentTool = undefined;
+
+    this.tiles = [];
+
     this.click = false;
   }
-  drawTile(tile) {
-    tile.draw(this.ctx);
+
+  onClick(tile) {
+    if (
+      this.currentTool &&
+      this.currentTool.name === kCanvasAvailableTools.draw
+    ) {
+      if (!this.tiles.find((t) => t.x === tile.x && t.y === tile.y)) {
+        this.tiles.push(tile);
+      }
+    } else if (
+      this.currentTool &&
+      this.currentTool.name === kCanvasAvailableTools.erase
+    ) {
+      if (this.tiles.find((t) => t.x === tile.x && t.y === tile.y)) {
+        this.tiles = this.tiles.filter((t) => t.x !== tile.x || t.y !== tile.y);
+      }
+    }
+    this.update();
   }
 
-  eraseTile(tile) {
-    tile.erase(this.ctx);
-  }
-
-  clickEvent(event, color) {
-    if (event.buttons === 1) {
-      const { x, y } = getCoordinates(event, this.element, 16);
-      const tile = new Tile({ x, y, color });
-      if (this.currentTool === kCanvasAvailableTools.draw) {
-        this.drawTile(tile);
-      }
-      if (this.currentTool === kCanvasAvailableTools.erase) {
-        this.eraseTile(tile);
-      }
+  update() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    for (const tile of this.tiles) {
+      tile.draw(this.ctx);
     }
   }
 }

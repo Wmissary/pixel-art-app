@@ -1,8 +1,11 @@
 import Colors from "./src/Colors.js";
 import Canvas from "./src/Canvas.js";
+import Tile from "./src/Tile.js";
 import Tool from "./src/Tool.js";
-import { rgbToHex } from "./src/utils.js";
+
 import { kCanvasAvailableTools } from "./src/config.js";
+
+import { rgbToHex, getCoordinates } from "./src/utils.js";
 
 // Color Management
 const favoriteColorsContainer = document.getElementById(
@@ -37,43 +40,59 @@ addColorToFavorites.onclick = () => {
     color.remove();
   };
 };
-
-// Tools Management
 const canvas = new Canvas(document.getElementById("canvas"));
-const kToolsArray = [];
-const toolsList = document.querySelectorAll(".tools-list");
 
-for (const tool of toolsList) {
+// Tools Event Listener
+
+const toolList = document.querySelectorAll(".tools-list");
+const tools = [];
+for (const tool of toolList) {
   const toolInstance = new Tool(kCanvasAvailableTools[tool.id], tool);
-  kToolsArray.push(toolInstance);
+  tools.push(toolInstance);
 
-  tool.onclick = () => {
+  tool.addEventListener("click", () => {
     toolInstance.click();
-    canvas.currentTool = toolInstance.name;
-    for (const tool of kToolsArray) {
-      if (tool !== toolInstance) {
-        tool.selected = false;
-        tool.update();
+    canvas.currentTool = toolInstance;
+    for (const otherTool of tools) {
+      if (otherTool !== toolInstance) {
+        otherTool.selected = false;
+        otherTool.update();
       }
     }
-  };
+  });
 }
 
-// Click Event Management
-canvas.element.onmousedown = (event) => {
-  canvas.clickEvent(event, colors.currentColor);
+// Canvas Event Listener
+
+canvas.element.addEventListener("mousedown", (event) => {
   canvas.click = true;
-  if (event.buttons === 4) {
-    canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-};
+  const { x, y } = getCoordinates({
+    offsetX: event.offsetX,
+    offsetY: event.offsetY,
+    width: canvas.width,
+    height: canvas.height,
+    computedWidth: canvas.computedWidth,
+    computedHeight: canvas.computedHeight,
+  });
+  const tile = new Tile({ x, y, color: colors.currentColor });
+  canvas.onClick(tile);
+});
 
-canvas.element.onmousemove = (event) => {
+canvas.element.addEventListener("mousemove", (event) => {
   if (canvas.click) {
-    canvas.clickEvent(event, colors.currentColor);
+    const { x, y } = getCoordinates({
+      offsetX: event.offsetX,
+      offsetY: event.offsetY,
+      width: canvas.width,
+      height: canvas.height,
+      computedWidth: canvas.computedWidth,
+      computedHeight: canvas.computedHeight,
+    });
+    const tile = new Tile({ x, y, color: colors.currentColor });
+    canvas.onClick(tile);
   }
-};
+});
 
-document.onmouseup = () => {
+canvas.element.addEventListener("mouseup", () => {
   canvas.click = false;
-};
+});

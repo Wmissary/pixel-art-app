@@ -6,11 +6,15 @@ export function rgbToHex(rgb) {
     .join("")}`;
 }
 
-export function getCoordinates(event, element, tileSize) {
-  const width = parseInt(getComputedStyle(element).width);
-  const height = parseInt(getComputedStyle(element).height);
-
-  const x = Math.floor(event.offsetX / (width / tileSize));
-  const y = Math.floor(event.offsetY / (height / tileSize));
+export function getCoordinates({
+  offsetX,
+  offsetY,
+  width,
+  height,
+  computedWidth,
+  computedHeight,
+}) {
+  const x = Math.floor(offsetX / (computedWidth / width));
+  const y = Math.floor(offsetY / (computedHeight / height));
   return { x, y };
 }
