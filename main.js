@@ -1,4 +1,3 @@
-import Colors from "./src/Colors.js";
 import Canvas from "./src/Canvas.js";
 import Tile from "./src/Tile.js";
 import Tool from "./src/Tool.js";
@@ -7,39 +6,30 @@ import { kCanvasAvailableTools } from "./src/config.js";
 
 import { rgbToHex, getCoordinates } from "./src/utils.js";
 
-// Color Management
+// Colors Event Listeners
 const favoriteColorsContainer = document.getElementById(
   "color-selected-container"
 );
 const colorPaletteInput = document.getElementById("color");
-const addColorToFavorites = document.getElementById("color-selected-add");
+const addColorToFavoritesButton = document.getElementById("color-selected-add");
 
-const colors = new Colors({
-  currentColor: colorPaletteInput.value,
+addColorToFavoritesButton.addEventListener("click", () => {
+  const color = colorPaletteInput.value;
+  const colorElement = document.createElement("div");
+  colorElement.classList.add("color-favorite");
+  colorElement.style.backgroundColor = color;
+  favoriteColorsContainer.prepend(colorElement);
+
+  colorElement.addEventListener("click", () => {
+    colorPaletteInput.value = rgbToHex(colorElement.style.backgroundColor);
+  });
+
+  colorElement.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    colorElement.remove();
+  });
 });
 
-colorPaletteInput.onchange = (event) => {
-  colors.currentColor = event.target.value;
-};
-
-addColorToFavorites.onclick = () => {
-  colors.add(colors.currentColor);
-  const color = document.createElement("div");
-  color.classList.add("color-favorite");
-  color.style.backgroundColor = colors.currentColor;
-  favoriteColorsContainer.prepend(color);
-
-  color.onclick = () => {
-    colors.currentColor = rgbToHex(color.style.backgroundColor);
-    colorPaletteInput.value = colors.currentColor;
-  };
-
-  color.oncontextmenu = (e) => {
-    e.preventDefault();
-    colors.remove(colors.currentColor);
-    color.remove();
-  };
-};
 const canvas = new Canvas(document.getElementById("canvas"));
 
 // Tools Event Listener
@@ -65,17 +55,23 @@ for (const tool of toolList) {
 // Canvas Event Listener
 
 canvas.element.addEventListener("mousedown", (event) => {
-  canvas.click = true;
-  const { x, y } = getCoordinates({
-    offsetX: event.offsetX,
-    offsetY: event.offsetY,
-    width: canvas.width,
-    height: canvas.height,
-    computedWidth: canvas.computedWidth,
-    computedHeight: canvas.computedHeight,
-  });
-  const tile = new Tile({ x, y, color: colors.currentColor });
-  canvas.onClick(tile);
+  if (event.buttons === 1) {
+    canvas.click = true;
+    const { x, y } = getCoordinates({
+      offsetX: event.offsetX,
+      offsetY: event.offsetY,
+      width: canvas.width,
+      height: canvas.height,
+      computedWidth: canvas.computedWidth,
+      computedHeight: canvas.computedHeight,
+    });
+    const tile = new Tile({ x, y, color: colorPaletteInput.value });
+    canvas.onClick(tile);
+  }
+
+  if (event.buttons === 4) {
+    canvas.clear();
+  }
 });
 
 canvas.element.addEventListener("mousemove", (event) => {
@@ -88,7 +84,7 @@ canvas.element.addEventListener("mousemove", (event) => {
       computedWidth: canvas.computedWidth,
       computedHeight: canvas.computedHeight,
     });
-    const tile = new Tile({ x, y, color: colors.currentColor });
+    const tile = new Tile({ x, y, color: colorPaletteInput.value });
     canvas.onClick(tile);
   }
 });

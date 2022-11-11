@@ -33,6 +33,13 @@ export default class Tile {
     return this.#color;
   }
 
+  set color(value) {
+    if (value === undefined) throw new Error("Tile color is undefined");
+    if (typeof value !== "string")
+      throw new Error("Tile color is not a string");
+    this.#color = value;
+  }
+
   draw(ctx) {
     ctx.fillStyle = this.#color;
     ctx.fillRect(this.#x, this.#y, this.#width, this.#height);
