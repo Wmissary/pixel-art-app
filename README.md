@@ -13,7 +13,7 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | Erase | MVF | Erase pixel on canvas | Click on rubber icon to select erase mode |
 | Fill | :x: | Fill pixel on canvas ||
 | Clear | MVF | Clear canvas | WIP press mouse wheel click to clear canvas |
-| Layers| :x: | Add layers management ||
+| Layers| MVF | Add layers management | Add Layer & Select Layer (you can't delete layer for the moment)|
 | Undo | :x: | Undo last action ||
 | Redo | :x: | Redo last action ||
 | Rotate | :x: | Rotate canvas ||
@@ -33,5 +33,6 @@ Go to => [pixel-app](https://wmissary.github.io/pixel-art-app/)
 
 Select a color from the palette
 Select Pen or Eraser mode
+Add and select your layer (if you have more than one)
 Click on the canvas to draw or erase
 Use mouse wheel click to clear the canvas.
