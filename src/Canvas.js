@@ -94,15 +94,16 @@ export default class Canvas {
   }
 
   onClick(tile, layer) {
-    const foundLayer = this.#layers.find((l) => l.name === layer.name);
-    const foundTile = foundLayer.tiles.find(
-      (t) => t.x === tile.x && t.y === tile.y
-    );
     if (
+      this.#currentLayer &&
       this.#currentTool &&
       this.#currentTool.name === kCanvasAvailableTools.draw
     ) {
+      const foundLayer = this.#layers.find((l) => l.name === layer.name);
       if (foundLayer) {
+        const foundTile = foundLayer.tiles.find(
+          (t) => t.x === tile.x && t.y === tile.y
+        );
         if (foundTile && foundTile.color !== tile.color) {
           foundTile.color = tile.color;
         }
@@ -111,10 +112,15 @@ export default class Canvas {
         }
       }
     } else if (
+      this.#currentLayer &&
       this.#currentTool &&
       this.#currentTool.name === kCanvasAvailableTools.erase
     ) {
+      const foundLayer = this.#layers.find((l) => l.name === layer.name);
       if (foundLayer) {
+        const foundTile = foundLayer.tiles.find(
+          (t) => t.x === tile.x && t.y === tile.y
+        );
         if (foundTile) {
           foundLayer.removeTile(tile);
         }

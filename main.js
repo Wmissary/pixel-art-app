@@ -43,7 +43,8 @@ for (const tool of toolList) {
 
   tool.addEventListener("click", () => {
     toolInstance.click();
-    canvas.currentTool = toolInstance;
+    if (toolInstance.selected) canvas.currentTool = toolInstance;
+    else canvas.currentTool = undefined;
     for (const otherTool of tools) {
       if (otherTool !== toolInstance) {
         otherTool.selected = false;
@@ -106,8 +107,9 @@ for (const layer of layersList) {
   const layerInstance = new Layer(layerName, layer);
   canvas.addLayer(layerInstance);
   layer.addEventListener("click", () => {
-    canvas.currentLayer = layerInstance.name;
     layerInstance.click();
+    if (layerInstance.selected) canvas.currentLayer = layerInstance.name;
+    else canvas.currentLayer = undefined;
     for (const otherLayer of canvas.layers) {
       if (otherLayer !== layerInstance) {
         otherLayer.selected = false;
@@ -128,8 +130,10 @@ layersButton.addEventListener("click", () => {
   const layerInstance = new Layer(layerSpan.textContent, cloneLayer);
   canvas.addLayer(layerInstance);
   cloneLayer.addEventListener("click", () => {
-    canvas.currentLayer = layerInstance.name;
     layerInstance.click();
+    canvas.currentLayer = layerInstance.name;
+    if (layerInstance.selected) canvas.currentLayer = layerInstance.name;
+    else canvas.currentLayer = undefined;
     for (const otherLayer of canvas.layers) {
       if (otherLayer !== layerInstance) {
         otherLayer.selected = false;
