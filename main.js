@@ -1,10 +1,13 @@
 import Canvas from "./src/Canvas.js";
 import Tile from "./src/Tile.js";
 import Tool from "./src/Tool.js";
+import Layer from "./src/Layer.js";
 
 import { kCanvasAvailableTools } from "./src/config.js";
 
 import { rgbToHex, getCoordinates } from "./src/utils.js";
+
+const canvas = new Canvas(document.getElementById("canvas"));
 
 // Colors Event Listeners
 const favoriteColorsContainer = document.getElementById(
@@ -29,8 +32,6 @@ addColorToFavoritesButton.addEventListener("click", () => {
     colorElement.remove();
   });
 });
-
-const canvas = new Canvas(document.getElementById("canvas"));
 
 // Tools Event Listener
 
@@ -66,7 +67,7 @@ canvas.element.addEventListener("mousedown", (event) => {
       computedHeight: canvas.computedHeight,
     });
     const tile = new Tile({ x, y, color: colorPaletteInput.value });
-    canvas.onClick(tile, { name: currentLayerName });
+    canvas.onClick(tile, { name: canvas.currentLayer });
   }
 
   if (event.buttons === 4) {
@@ -85,7 +86,7 @@ canvas.element.addEventListener("mousemove", (event) => {
       computedHeight: canvas.computedHeight,
     });
     const tile = new Tile({ x, y, color: colorPaletteInput.value });
-    canvas.onClick(tile, { name: currentLayerName });
+    canvas.onClick(tile, { name: canvas.currentLayer });
   }
 });
 
@@ -97,17 +98,22 @@ canvas.element.addEventListener("mouseup", () => {
 
 const layersButton = document.getElementById("layers-add");
 const layersContainer = document.getElementById("layers-ul");
-let currentLayerName = "Layer 1";
 
-const layers = document.querySelectorAll(".layers-list");
-for (const layer of layers) {
-  const layerName = layer.querySelector(".layers-name");
+const layersList = document.querySelectorAll(".layers-list");
+
+for (const layer of layersList) {
+  const layerName = layer.querySelector(".layers-name").innerText;
+  const layerInstance = new Layer(layerName, layer);
+  canvas.addLayer(layerInstance);
   layer.addEventListener("click", () => {
-    currentLayerName = layerName.innerText;
-    for (const otherLayer of document.querySelectorAll(".layers-list")) {
-      otherLayer.classList.remove("layers-list-selected");
+    canvas.currentLayer = layerInstance.name;
+    layerInstance.click();
+    for (const otherLayer of canvas.layers) {
+      if (otherLayer !== layerInstance) {
+        otherLayer.selected = false;
+        otherLayer.update();
+      }
     }
-    layer.classList.add("layers-list-selected");
   });
 }
 
@@ -119,17 +125,18 @@ layersButton.addEventListener("click", () => {
   cloneLayer.classList.add("layers-list");
   const layerSpan = cloneLayer.querySelector(".layers-name");
   layerSpan.textContent = `Layer ${layerNumber}`;
+  const layerInstance = new Layer(layerSpan.textContent, cloneLayer);
+  canvas.addLayer(layerInstance);
   cloneLayer.addEventListener("click", () => {
-    currentLayerName = layerSpan.textContent;
-    for (const layer of document.querySelectorAll(".layers-list")) {
-      layer.classList.remove("layers-list-selected");
+    canvas.currentLayer = layerInstance.name;
+    layerInstance.click();
+    for (const otherLayer of canvas.layers) {
+      if (otherLayer !== layerInstance) {
+        otherLayer.selected = false;
+        otherLayer.update();
+      }
     }
-    cloneLayer.classList.add("layers-list-selected");
   });
 
   layersContainer.appendChild(cloneLayer);
-  canvas.addLayer({
-    name: layerSpan.textContent,
-    tiles: [],
-  });
 });

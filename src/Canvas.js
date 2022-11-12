@@ -8,7 +8,7 @@ export default class Canvas {
   #computedWidth;
   #computedHeight;
   #currentTool;
-  #tiles;
+  #currentLayer;
   #layers;
   #click;
   constructor(canvas) {
@@ -27,13 +27,9 @@ export default class Canvas {
 
     this.#currentTool = undefined;
 
-    this.#tiles = [];
-    this.#layers = [
-      {
-        name: "Layer 1",
-        tiles: [],
-      },
-    ];
+    this.#currentLayer = undefined;
+
+    this.#layers = [];
 
     this.#click = false;
   }
@@ -74,6 +70,18 @@ export default class Canvas {
     return this.#click;
   }
 
+  get layers() {
+    return this.#layers;
+  }
+
+  get currentLayer() {
+    return this.#currentLayer;
+  }
+
+  set currentLayer(value) {
+    this.#currentLayer = value;
+  }
+
   addLayer(layer) {
     if (layer === undefined) throw new Error("Layer is undefined");
     if (layer) this.#layers.push(layer);
@@ -99,7 +107,7 @@ export default class Canvas {
           foundTile.color = tile.color;
         }
         if (!foundTile) {
-          foundLayer.tiles.push(tile);
+          foundLayer.addTile(tile);
         }
       }
     } else if (
@@ -108,17 +116,16 @@ export default class Canvas {
     ) {
       if (foundLayer) {
         if (foundTile) {
-          foundLayer.tiles = foundLayer.tiles.filter(
-            (t) => t.x !== tile.x || t.y !== tile.y
-          );
+          foundLayer.removeTile(tile);
         }
       }
     }
     this.#update();
-    console.log(this.#layers);
   }
   clear() {
-    this.#tiles = [];
+    for (const layer of this.#layers) {
+      layer.tiles = [];
+    }
     this.#update();
   }
 
