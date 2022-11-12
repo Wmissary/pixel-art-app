@@ -205,6 +205,7 @@ main {
   align-items: center;
   justify-content: space-between;
   margin: 10px 10px;
+  cursor: pointer;
 }
 
 .layers-icon {
@@ -232,6 +233,11 @@ main {
 }
 
 #layers-add:hover {
+  border: #fffffd 1px solid;
+  background-color: var(--hover-backgroud-color);
+}
+
+.layers-list-selected {
   border: #fffffd 1px solid;
   background-color: var(--hover-backgroud-color);
 }

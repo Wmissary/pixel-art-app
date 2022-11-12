@@ -66,7 +66,7 @@ canvas.element.addEventListener("mousedown", (event) => {
       computedHeight: canvas.computedHeight,
     });
     const tile = new Tile({ x, y, color: colorPaletteInput.value });
-    canvas.onClick(tile);
+    canvas.onClick(tile, { name: currentLayerName });
   }
 
   if (event.buttons === 4) {
@@ -85,10 +85,51 @@ canvas.element.addEventListener("mousemove", (event) => {
       computedHeight: canvas.computedHeight,
     });
     const tile = new Tile({ x, y, color: colorPaletteInput.value });
-    canvas.onClick(tile);
+    canvas.onClick(tile, { name: currentLayerName });
   }
 });
 
 canvas.element.addEventListener("mouseup", () => {
   canvas.click = false;
+});
+
+// Layers Event Listener
+
+const layersButton = document.getElementById("layers-add");
+const layersContainer = document.getElementById("layers-ul");
+let currentLayerName = "Layer 1";
+
+const layers = document.querySelectorAll(".layers-list");
+for (const layer of layers) {
+  const layerName = layer.querySelector(".layers-name");
+  layer.addEventListener("click", () => {
+    currentLayerName = layerName.innerText;
+    for (const otherLayer of document.querySelectorAll(".layers-list")) {
+      otherLayer.classList.remove("layers-list-selected");
+    }
+    layer.classList.add("layers-list-selected");
+  });
+}
+
+layersButton.addEventListener("click", () => {
+  const layersList = document.querySelectorAll(".layers-list");
+  const layerNumber = layersList.length + 1;
+  const cloneLayer = layersList[0].cloneNode(true);
+  cloneLayer.classList.remove("layers-list-selected");
+  cloneLayer.classList.add("layers-list");
+  const layerSpan = cloneLayer.querySelector(".layers-name");
+  layerSpan.textContent = `Layer ${layerNumber}`;
+  cloneLayer.addEventListener("click", () => {
+    currentLayerName = layerSpan.textContent;
+    for (const layer of document.querySelectorAll(".layers-list")) {
+      layer.classList.remove("layers-list-selected");
+    }
+    cloneLayer.classList.add("layers-list-selected");
+  });
+
+  layersContainer.appendChild(cloneLayer);
+  canvas.addLayer({
+    name: layerSpan.textContent,
+    tiles: [],
+  });
 });

@@ -9,6 +9,7 @@ export default class Canvas {
   #computedHeight;
   #currentTool;
   #tiles;
+  #layers;
   #click;
   constructor(canvas) {
     if (canvas === undefined) throw new Error("Canvas is undefined");
@@ -27,6 +28,12 @@ export default class Canvas {
     this.#currentTool = undefined;
 
     this.#tiles = [];
+    this.#layers = [
+      {
+        name: "Layer 1",
+        tiles: [],
+      },
+    ];
 
     this.#click = false;
   }
@@ -67,37 +74,48 @@ export default class Canvas {
     return this.#click;
   }
 
+  addLayer(layer) {
+    if (layer === undefined) throw new Error("Layer is undefined");
+    if (layer) this.#layers.push(layer);
+  }
+
   set click(value) {
     if (value === undefined) throw new Error("Click is undefined");
     if (typeof value !== "boolean") throw new Error("Click is not a boolean");
     this.#click = value;
   }
 
-  onClick(tile) {
+  onClick(tile, layer) {
+    const foundLayer = this.#layers.find((l) => l.name === layer.name);
+    const foundTile = foundLayer.tiles.find(
+      (t) => t.x === tile.x && t.y === tile.y
+    );
     if (
       this.#currentTool &&
       this.#currentTool.name === kCanvasAvailableTools.draw
     ) {
-      const foundTile = this.#tiles.find(
-        (t) => t.x === tile.x && t.y === tile.y
-      );
-      if (foundTile && foundTile.color !== tile.color) {
-        foundTile.color = tile.color;
-      }
-      if (!foundTile) {
-        this.#tiles.push(tile);
+      if (foundLayer) {
+        if (foundTile && foundTile.color !== tile.color) {
+          foundTile.color = tile.color;
+        }
+        if (!foundTile) {
+          foundLayer.tiles.push(tile);
+        }
       }
     } else if (
       this.#currentTool &&
       this.#currentTool.name === kCanvasAvailableTools.erase
     ) {
-      if (this.#tiles.find((t) => t.x === tile.x && t.y === tile.y)) {
-        this.#tiles = this.#tiles.filter(
-          (t) => t.x !== tile.x || t.y !== tile.y
-        );
+      if (foundLayer) {
+        if (foundTile) {
+          foundLayer.tiles = foundLayer.tiles.filter(
+            (t) => t.x !== tile.x || t.y !== tile.y
+          );
+        }
       }
     }
     this.#update();
+    console.log(this.#layers);
   }
   clear() {
     this.#tiles = [];
@@ -106,8 +124,10 @@ export default class Canvas {
 
   #update() {
     this.#ctx.clearRect(0, 0, this.#width, this.#height);
-    for (const tile of this.#tiles) {
-      tile.draw(this.ctx);
+    for (const layer of this.#layers) {
+      for (const tile of layer.tiles) {
+        tile.draw(this.#ctx);
+      }
     }
   }
 }
