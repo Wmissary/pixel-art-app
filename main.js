@@ -1,15 +1,126 @@
-import Canvas from "./src/Canvas.js";
-import Tile from "./src/Tile.js";
-import Tool from "./src/Tool.js";
-import Layer from "./src/Layer.js";
+import Canvas from "./src/classes/Canvas.js";
+import { Pencil, Eraser } from "./src/tools/index.js";
+import { rgbToHex } from "./src/utils.js";
+import Layer from "./src/classes/Layer.js";
+import Tile from "./src/classes/Tile.js";
 
-import { kCanvasAvailableTools } from "./src/config.js";
+const canvasElement = document.getElementById("canvas");
+const canvas = new Canvas(canvasElement);
 
-import { rgbToHex, getCoordinates } from "./src/utils.js";
+// tools Events
+const pencilButton = document.getElementById("pencil");
+const pencil = new Pencil("pencil", canvas);
 
-const canvas = new Canvas(document.getElementById("canvas"));
+const eraserButton = document.getElementById("eraser");
+const eraser = new Eraser("eraser", canvas);
 
-// Colors Event Listeners
+const tools = new Set([pencil, eraser]);
+const toolsElements = new Set([pencilButton, eraserButton]);
+
+for (const toolElement of toolsElements) {
+  toolElement.addEventListener("click", () => {
+    const tool = [...tools].find((t) => t.name === toolElement.id);
+    tool.toggleSelected();
+    toolElement.classList.toggle("tool-list-selected");
+    const otherTools = [...tools].filter((t) => t !== tool);
+    for (const otherTool of otherTools) {
+      otherTool.selected = false;
+      const otherToolElement = [...toolsElements].find(
+        (t) => t.id === otherTool.name
+      );
+      otherToolElement.classList.remove("tool-list-selected");
+    }
+  });
+}
+
+// layers Events
+const layerContainer = document.getElementById("layers-ul");
+
+const defaultLayer = new Layer("Layer 1", canvas);
+
+const layers = new Set([defaultLayer]);
+
+const layerElement = (layer) => {
+  return `<li class="layers-list" >
+  <div>
+  <span class="layers-name">${layer.name}</span>
+  </div>
+  <div>
+  <i class="fa-solid fa-eye layer-icon layer-hide"></i>
+  <i class="fa-solid fa-lock layer-icon layer-lock"></i>
+  </div>
+  </li>`;
+};
+
+const addLayerButtonListener = () => {
+  const layerSelectButtons = document.querySelectorAll(".layers-name");
+
+  for (const layerSelectButton of layerSelectButtons) {
+    layerSelectButton.addEventListener("click", () => {
+      const layer = [...layers].find(
+        (l) => l.name === layerSelectButton.innerText
+      );
+      layer.toggleSelected();
+      layerSelectButton.parentElement.parentElement.classList.toggle(
+        "layers-list-selected"
+      );
+      const otherLayers = [...layers].filter((l) => l !== layer);
+      for (const otherLayer of otherLayers) {
+        otherLayer.selected = false;
+        const otherLayerElement = [...layerSelectButtons].find(
+          (l) => l.innerText === otherLayer.name
+        );
+        otherLayerElement.parentElement.parentElement.classList.remove(
+          "layers-list-selected"
+        );
+      }
+    });
+  }
+};
+
+for (const layer of layers) {
+  layerContainer.innerHTML += layerElement(layer);
+  addLayerButtonListener();
+}
+
+const addLayerButton = document.getElementById("layers-add");
+
+addLayerButton.addEventListener("click", () => {
+  const layer = new Layer(`Layer ${layers.size + 1}`, canvas);
+  layers.add(layer);
+  layerContainer.innerHTML += layerElement(layer);
+  addLayerButtonListener();
+});
+
+// Canvas Events
+
+canvas.element.addEventListener("mousedown", (e) => {
+  if (canvas.layer && e.buttons === 1) {
+    canvas.isClicked = true;
+    const { x, y } = canvas.getGridPosition(e);
+    const tile = new Tile({ x, y, canvas, color: colorPaletteInput.value });
+    canvas.click(tile);
+  }
+  if (e.buttons === 4) {
+    canvas.clear(layers);
+  }
+  canvas.draw(layers);
+});
+
+canvas.element.addEventListener("mousemove", (e) => {
+  if (canvas.isClicked === true && canvas.layer) {
+    const { x, y } = canvas.getGridPosition(e);
+    const tile = new Tile({ x, y, color: colorPaletteInput.value });
+    canvas.click(tile);
+  }
+  canvas.draw(layers);
+});
+
+document.addEventListener("mouseup", () => {
+  canvas.isClicked = false;
+});
+
+// Colors Event
 const favoriteColorsContainer = document.getElementById(
   "color-selected-container"
 );
@@ -17,10 +128,9 @@ const colorPaletteInput = document.getElementById("color");
 const addColorToFavoritesButton = document.getElementById("color-selected-add");
 
 addColorToFavoritesButton.addEventListener("click", () => {
-  const color = colorPaletteInput.value;
   const colorElement = document.createElement("div");
   colorElement.classList.add("color-favorite");
-  colorElement.style.backgroundColor = color;
+  colorElement.style.backgroundColor = colorPaletteInput.value;
   favoriteColorsContainer.prepend(colorElement);
 
   colorElement.addEventListener("click", () => {
@@ -31,116 +141,4 @@ addColorToFavoritesButton.addEventListener("click", () => {
     e.preventDefault();
     colorElement.remove();
   });
-});
-
-// Tools Event Listener
-
-const toolList = document.querySelectorAll(".tools-list");
-const tools = [];
-for (const tool of toolList) {
-  const toolInstance = new Tool(kCanvasAvailableTools[tool.id], tool);
-  tools.push(toolInstance);
-
-  tool.addEventListener("click", () => {
-    toolInstance.click();
-    if (toolInstance.selected) canvas.currentTool = toolInstance;
-    else canvas.currentTool = undefined;
-    for (const otherTool of tools) {
-      if (otherTool !== toolInstance) {
-        otherTool.selected = false;
-        otherTool.update();
-      }
-    }
-  });
-}
-
-// Canvas Event Listener
-
-canvas.element.addEventListener("mousedown", (event) => {
-  if (event.buttons === 1) {
-    canvas.click = true;
-    const { x, y } = getCoordinates({
-      offsetX: event.offsetX,
-      offsetY: event.offsetY,
-      width: canvas.width,
-      height: canvas.height,
-      computedWidth: canvas.computedWidth,
-      computedHeight: canvas.computedHeight,
-    });
-    const tile = new Tile({ x, y, color: colorPaletteInput.value });
-    canvas.onClick(tile, { name: canvas.currentLayer });
-  }
-
-  if (event.buttons === 4) {
-    canvas.clear();
-  }
-});
-
-canvas.element.addEventListener("mousemove", (event) => {
-  if (canvas.click) {
-    const { x, y } = getCoordinates({
-      offsetX: event.offsetX,
-      offsetY: event.offsetY,
-      width: canvas.width,
-      height: canvas.height,
-      computedWidth: canvas.computedWidth,
-      computedHeight: canvas.computedHeight,
-    });
-    const tile = new Tile({ x, y, color: colorPaletteInput.value });
-    canvas.onClick(tile, { name: canvas.currentLayer });
-  }
-});
-
-canvas.element.addEventListener("mouseup", () => {
-  canvas.click = false;
-});
-
-// Layers Event Listener
-
-const layersButton = document.getElementById("layers-add");
-const layersContainer = document.getElementById("layers-ul");
-
-const layersList = document.querySelectorAll(".layers-list");
-
-for (const layer of layersList) {
-  const layerName = layer.querySelector(".layers-name").innerText;
-  const layerInstance = new Layer(layerName, layer);
-  canvas.addLayer(layerInstance);
-  layer.addEventListener("click", () => {
-    layerInstance.click();
-    if (layerInstance.selected) canvas.currentLayer = layerInstance.name;
-    else canvas.currentLayer = undefined;
-    for (const otherLayer of canvas.layers) {
-      if (otherLayer !== layerInstance) {
-        otherLayer.selected = false;
-        otherLayer.update();
-      }
-    }
-  });
-}
-
-layersButton.addEventListener("click", () => {
-  const layersList = document.querySelectorAll(".layers-list");
-  const layerNumber = layersList.length + 1;
-  const cloneLayer = layersList[0].cloneNode(true);
-  cloneLayer.classList.remove("layers-list-selected");
-  cloneLayer.classList.add("layers-list");
-  const layerSpan = cloneLayer.querySelector(".layers-name");
-  layerSpan.textContent = `Layer ${layerNumber}`;
-  const layerInstance = new Layer(layerSpan.textContent, cloneLayer);
-  canvas.addLayer(layerInstance);
-  cloneLayer.addEventListener("click", () => {
-    layerInstance.click();
-    canvas.currentLayer = layerInstance.name;
-    if (layerInstance.selected) canvas.currentLayer = layerInstance.name;
-    else canvas.currentLayer = undefined;
-    for (const otherLayer of canvas.layers) {
-      if (otherLayer !== layerInstance) {
-        otherLayer.selected = false;
-        otherLayer.update();
-      }
-    }
-  });
-
-  layersContainer.appendChild(cloneLayer);
 });

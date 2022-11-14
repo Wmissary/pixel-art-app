@@ -205,6 +205,8 @@ main {
   align-items: center;
   justify-content: space-between;
   margin: 10px 10px;
+  padding: 2px;
+  border: 1px solid transparent;
   cursor: pointer;
 }
 
@@ -239,5 +241,4 @@ main {
 
 .layers-list-selected {
   border: #fffffd 1px solid;
-  background-color: var(--hover-backgroud-color);
 }
