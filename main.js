@@ -1,13 +1,18 @@
 import Canvas from "./src/classes/Canvas.js";
-import { Pencil, Eraser } from "./src/tools/index.js";
-import { rgbToHex } from "./src/utils.js";
 import Layer from "./src/classes/Layer.js";
 import Tile from "./src/classes/Tile.js";
+
+import { Pencil, Eraser } from "./src/tools/index.js";
+import { rgbToHex } from "./src/utils.js";
+
+import LayerEvents from "./src/LayerEvents.js";
+
+import LayerHTML from "./src/LayerHTML.js";
 
 const canvasElement = document.getElementById("canvas");
 const canvas = new Canvas(canvasElement);
 
-// tools Events
+// tool Events
 const pencilButton = document.getElementById("pencil");
 const pencil = new Pencil("pencil", canvas);
 
@@ -33,54 +38,16 @@ for (const toolElement of toolsElements) {
   });
 }
 
-// layers Events
+// Layer Events
+
 const layerContainer = document.getElementById("layers-ul");
+const layers = new Set([new Layer("Layer 1", canvas)]);
 
-const defaultLayer = new Layer("Layer 1", canvas);
-
-const layers = new Set([defaultLayer]);
-
-const layerElement = (layer) => {
-  return `<li class="layers-list" >
-  <div>
-  <span class="layers-name">${layer.name}</span>
-  </div>
-  <div>
-  <i class="fa-solid fa-eye layer-icon layer-hide"></i>
-  <i class="fa-solid fa-lock layer-icon layer-lock"></i>
-  </div>
-  </li>`;
-};
-
-const addLayerButtonListener = () => {
-  const layerSelectButtons = document.querySelectorAll(".layers-name");
-
-  for (const layerSelectButton of layerSelectButtons) {
-    layerSelectButton.addEventListener("click", () => {
-      const layer = [...layers].find(
-        (l) => l.name === layerSelectButton.innerText
-      );
-      layer.toggleSelected();
-      layerSelectButton.parentElement.parentElement.classList.toggle(
-        "layers-list-selected"
-      );
-      const otherLayers = [...layers].filter((l) => l !== layer);
-      for (const otherLayer of otherLayers) {
-        otherLayer.selected = false;
-        const otherLayerElement = [...layerSelectButtons].find(
-          (l) => l.innerText === otherLayer.name
-        );
-        otherLayerElement.parentElement.parentElement.classList.remove(
-          "layers-list-selected"
-        );
-      }
-    });
-  }
-};
-
-for (const layer of layers) {
-  layerContainer.innerHTML += layerElement(layer);
-  addLayerButtonListener();
+for (const layerClass of layers) {
+  const layerHTML = new LayerHTML(layerContainer, layerClass);
+  const layerElement = layerHTML.create();
+  const layerEvent = new LayerEvents(layerClass, layerElement);
+  layerEvent.add(canvas, layers, layerContainer);
 }
 
 const addLayerButton = document.getElementById("layers-add");
@@ -88,8 +55,12 @@ const addLayerButton = document.getElementById("layers-add");
 addLayerButton.addEventListener("click", () => {
   const layer = new Layer(`Layer ${layers.size + 1}`, canvas);
   layers.add(layer);
-  layerContainer.innerHTML += layerElement(layer);
-  addLayerButtonListener();
+
+  const layerHTML = new LayerHTML(layerContainer, layer);
+  const layerElement = layerHTML.create();
+
+  const layerEvent = new LayerEvents(layer, layerElement);
+  layerEvent.add(canvas, layers, layerContainer);
 });
 
 // Canvas Events
@@ -100,11 +71,11 @@ canvas.element.addEventListener("mousedown", (e) => {
     const { x, y } = canvas.getGridPosition(e);
     const tile = new Tile({ x, y, canvas, color: colorPaletteInput.value });
     canvas.click(tile);
+    canvas.draw(layers);
   }
   if (e.buttons === 4) {
     canvas.clear(layers);
   }
-  canvas.draw(layers);
 });
 
 canvas.element.addEventListener("mousemove", (e) => {
@@ -112,15 +83,16 @@ canvas.element.addEventListener("mousemove", (e) => {
     const { x, y } = canvas.getGridPosition(e);
     const tile = new Tile({ x, y, color: colorPaletteInput.value });
     canvas.click(tile);
+    canvas.draw(layers);
   }
-  canvas.draw(layers);
 });
 
 document.addEventListener("mouseup", () => {
   canvas.isClicked = false;
+  canvas.draw(layers);
 });
 
-// Colors Event
+// Color Events
 const favoriteColorsContainer = document.getElementById(
   "color-selected-container"
 );

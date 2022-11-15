@@ -49,8 +49,10 @@ export default class Canvas {
   draw(layers) {
     this.ctx.clearRect(0, 0, this.width, this.height);
     for (const layer of layers) {
-      for (const tile of layer.tiles) {
-        tile.draw(this.ctx);
+      if (layer.visible === true) {
+        for (const tile of layer.tiles) {
+          tile.draw(this.ctx);
+        }
       }
     }
   }
