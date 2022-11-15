@@ -73,6 +73,7 @@ canvas.element.addEventListener("mousedown", (e) => {
     canvas.click(tile);
     canvas.draw(layers);
   }
+
   if (e.buttons === 4) {
     canvas.clear(layers);
   }

@@ -14,9 +14,23 @@ export default class LayerEvents {
     layerVisibilityButton.classList.toggle("fa-eye");
     layerVisibilityButton.classList.toggle("fa-eye-slash");
   }
+  toggleLockLayerClick() {
+    this.layer.toggleLock();
+    const layerLockButton = this.layerElement.querySelector(".layer-lock");
+    layerLockButton.classList.toggle("fa-lock-open");
+    layerLockButton.classList.toggle("fa-lock");
+  }
+
+  deleteLayerClick(layers, layerContainer) {
+    layers.delete(this.layer);
+    layerContainer.removeChild(this.layerElement);
+  }
+
   add(canvas, layers, layerContainer) {
     const selectButton = this.layerElement.querySelector(".layers-name");
     const visibilityButton = this.layerElement.querySelector(".layer-hide");
+    const lockButton = this.layerElement.querySelector(".layer-lock");
+    const deleteButton = this.layerElement.querySelector(".layer-delete");
 
     selectButton.addEventListener("click", () => {
       this.toggleSelectLayerClick();
@@ -35,6 +49,16 @@ export default class LayerEvents {
     visibilityButton.addEventListener("click", () => {
       this.toggleLayerVisibleClick();
       canvas.draw(layers);
+    });
+
+    lockButton.addEventListener("click", () => {
+      this.toggleLockLayerClick();
+    });
+
+    deleteButton.addEventListener("click", () => {
+      this.deleteLayerClick(layers, layerContainer);
+      canvas.draw(layers);
+      console.log(layers);
     });
   }
 }

@@ -5,8 +5,10 @@ export default class Eraser extends Tool {
     super(buttonElement, selectedCSSClassName, canvas);
   }
   use(tile) {
-    this.canvas.layer.tiles = this.canvas.layer.tiles.filter(
-      (t) => t.x !== tile.x || t.y !== tile.y
-    );
+    if (!this.canvas.layer.locked) {
+      this.canvas.layer.tiles = this.canvas.layer.tiles.filter(
+        (t) => t.x !== tile.x || t.y !== tile.y
+      );
+    }
   }
 }

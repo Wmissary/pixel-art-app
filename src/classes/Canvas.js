@@ -57,7 +57,8 @@ export default class Canvas {
     }
   }
   clear(layers) {
-    for (const layer of layers) {
+    const unlockedLayer = [...layers].filter((layer) => !layer.locked);
+    for (const layer of unlockedLayer) {
       layer.tiles = [];
       this.draw(layers);
     }

@@ -3,12 +3,11 @@ export default class LayerHTML {
     this.layer = layer;
     this.layerContainer = layerContainer;
     this.element = `<li class="layers-list" >
-                         <div>
-                            <span class="layers-name">${this.layer.name}</span>
-                        </div>
+                        <span class="layers-name">${layer.name}</span>
                         <div>
                             <i class="fa-solid fa-eye layer-icon layer-hide"></i>
-                            <i class="fa-solid fa-lock layer-icon layer-lock"></i>
+                            <i class="fa-solid fa-lock-open layer-icon layer-lock"></i>
+                            <i class="fa-solid fa-trash-alt layer-icon layer-delete"></i>
                         </div>
                     </li>`;
   }
