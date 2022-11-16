@@ -3,6 +3,7 @@ export default class LayerHTML {
     this.layer = layer;
     this.layerContainer = layerContainer;
     this.element = `<li class="layers-list" >
+                        <input type="checkbox" class="layers-checkbox" name="selected"/>
                         <span class="layers-name">${layer.name}</span>
                         <div>
                             <i class="fa-solid fa-eye layer-icon layer-hide"></i>

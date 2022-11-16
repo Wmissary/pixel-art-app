@@ -27,7 +27,7 @@ export default class LayerEvents {
   }
 
   add(canvas, layers, layerContainer) {
-    const selectButton = this.layerElement.querySelector(".layers-name");
+    const selectButton = this.layerElement.querySelector(".layers-checkbox");
     const visibilityButton = this.layerElement.querySelector(".layer-hide");
     const lockButton = this.layerElement.querySelector(".layer-lock");
     const deleteButton = this.layerElement.querySelector(".layer-delete");
@@ -43,6 +43,7 @@ export default class LayerEvents {
         );
 
         otherLayerElement.classList.remove("layers-list-selected");
+        otherLayerElement.querySelector(".layers-checkbox").checked = false;
       }
     });
 
