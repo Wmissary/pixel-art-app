@@ -82,4 +82,13 @@ export default class Layer {
   toggleLock() {
     this.#locked = !this.#locked;
   }
+
+  getData() {
+    return {
+      name: this.#name,
+      tiles: [...this.#tiles].map((tile) => tile.getData()),
+      visible: this.#visible,
+      locked: this.#locked,
+    };
+  }
 }

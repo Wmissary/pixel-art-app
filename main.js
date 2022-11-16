@@ -40,8 +40,50 @@ for (const toolElement of toolsElements) {
 
 // Layer Events
 
+const favoriteColorsContainer = document.getElementById(
+  "color-selected-container"
+);
+const favoriteColors = new Set();
+const colorPaletteInput = document.getElementById("color");
+const addColorToFavoritesButton = document.getElementById("color-selected-add");
 const layerContainer = document.getElementById("layers-ul");
-const layers = new Set([new Layer("Layer 1", canvas)]);
+const data = JSON.parse(localStorage.getItem("data"));
+const layers = new Set();
+
+if (data !== null) {
+  data.layers.map((l) => {
+    const tilesMap = l.tiles.map(
+      (t) => new Tile({ x: t.x, y: t.y, color: t.color })
+    );
+    const layer = new Layer(l.name, canvas);
+    layer.visible = l.visible;
+    layer.locked = l.locked;
+    layer.tiles = tilesMap;
+    layers.add(layer);
+  });
+  data.colors.map((c) => {
+    const colorElement = document.createElement("div");
+    colorElement.classList.add("color-favorite");
+    colorElement.style.backgroundColor = c;
+    favoriteColorsContainer.prepend(colorElement);
+
+    favoriteColors.add(c);
+
+    colorElement.addEventListener("click", () => {
+      colorPaletteInput.value = rgbToHex(colorElement.style.backgroundColor);
+    });
+
+    colorElement.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+
+      favoriteColors.delete(c);
+      colorElement.remove();
+    });
+  });
+  canvas.draw(layers);
+} else {
+  layers.add(new Layer("Layer 1", canvas));
+}
 
 for (const layerClass of layers) {
   const layerHTML = new LayerHTML(layerContainer, layerClass);
@@ -53,14 +95,17 @@ for (const layerClass of layers) {
 const addLayerButton = document.getElementById("layers-add");
 
 addLayerButton.addEventListener("click", () => {
-  const layer = new Layer(`Layer ${layers.size + 1}`, canvas);
-  layers.add(layer);
+  const layerName = prompt("Layer Name");
+  if (layerName !== null && layerName.length >= 1) {
+    const layer = new Layer(`${layerName}`, canvas);
+    layers.add(layer);
 
-  const layerHTML = new LayerHTML(layerContainer, layer);
-  const layerElement = layerHTML.create();
+    const layerHTML = new LayerHTML(layerContainer, layer);
+    const layerElement = layerHTML.create();
 
-  const layerEvent = new LayerEvents(layer, layerElement);
-  layerEvent.add(canvas, layers, layerContainer);
+    const layerEvent = new LayerEvents(layer, layerElement);
+    layerEvent.add(canvas, layers, layerContainer);
+  }
 });
 
 // Canvas Events
@@ -88,30 +133,45 @@ canvas.element.addEventListener("mousemove", (e) => {
   }
 });
 
-document.addEventListener("mouseup", () => {
+window.addEventListener("mouseup", () => {
   canvas.isClicked = false;
-  canvas.draw(layers);
+  const data = {
+    layers: [...layers].map((layer) => layer.getData()),
+    colors: [...favoriteColors],
+  };
+  localStorage.setItem("data", JSON.stringify(data));
 });
 
 // Color Events
-const favoriteColorsContainer = document.getElementById(
-  "color-selected-container"
-);
-const colorPaletteInput = document.getElementById("color");
-const addColorToFavoritesButton = document.getElementById("color-selected-add");
 
 addColorToFavoritesButton.addEventListener("click", () => {
-  const colorElement = document.createElement("div");
-  colorElement.classList.add("color-favorite");
-  colorElement.style.backgroundColor = colorPaletteInput.value;
-  favoriteColorsContainer.prepend(colorElement);
+  if (!favoriteColors.has(colorPaletteInput.value)) {
+    const colorElement = document.createElement("div");
+    colorElement.classList.add("color-favorite");
+    colorElement.style.backgroundColor = colorPaletteInput.value;
+    favoriteColorsContainer.prepend(colorElement);
 
-  colorElement.addEventListener("click", () => {
-    colorPaletteInput.value = rgbToHex(colorElement.style.backgroundColor);
-  });
+    favoriteColors.add(colorPaletteInput.value);
 
-  colorElement.addEventListener("contextmenu", (e) => {
-    e.preventDefault();
-    colorElement.remove();
-  });
+    colorElement.addEventListener("click", () => {
+      colorPaletteInput.value = rgbToHex(colorElement.style.backgroundColor);
+    });
+
+    colorElement.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      favoriteColors.delete(rgbToHex(colorElement.style.backgroundColor));
+      colorElement.remove();
+    });
+  }
+});
+
+// Save Event
+
+const saveButton = document.getElementById("save");
+saveButton.addEventListener("click", () => {
+  const data = {
+    layers: [...layers].map((layer) => layer.getData()),
+    colors: [...favoriteColors],
+  };
+  localStorage.setItem("data", JSON.stringify(data));
 });

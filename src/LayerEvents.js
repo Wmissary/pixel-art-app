@@ -58,7 +58,6 @@ export default class LayerEvents {
     deleteButton.addEventListener("click", () => {
       this.deleteLayerClick(layers, layerContainer);
       canvas.draw(layers);
-      console.log(layers);
     });
   }
 }
