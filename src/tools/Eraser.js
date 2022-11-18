@@ -1,13 +1,14 @@
 import Tool from "../classes/Tool.js";
 
 export default class Eraser extends Tool {
-  constructor(buttonElement, selectedCSSClassName, canvas) {
-    super(buttonElement, selectedCSSClassName, canvas);
+  constructor(name) {
+    super(name);
   }
-  use(tile) {
-    if (!this.canvas.layer.locked) {
-      this.canvas.layer.tiles = this.canvas.layer.tiles.filter(
-        (t) => t.x !== tile.x || t.y !== tile.y
+  do({ event, canvas }) {
+    if (!canvas.layer.locked) {
+      const { x, y } = canvas.getGridPosition(event);
+      canvas.layer.tiles = canvas.layer.tiles.filter(
+        (t) => t.x !== x || t.y !== y
       );
     }
   }

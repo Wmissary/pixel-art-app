@@ -242,3 +242,9 @@ main {
 .layers-list-selected {
   border: #fffffd 1px solid;
 }
+
+.layers-name {
+  width: 55px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

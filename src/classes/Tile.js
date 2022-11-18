@@ -44,11 +44,4 @@ export default class Tile {
     ctx.fillStyle = this.#color;
     ctx.fillRect(this.#x, this.#y, this.#width, this.#height);
   }
-  getData() {
-    return {
-      x: this.#x,
-      y: this.#y,
-      color: this.#color,
-    };
-  }
 }

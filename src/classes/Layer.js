@@ -1,28 +1,25 @@
-import Canvas from "./Canvas.js";
-
 export default class Layer {
   #name;
   #tiles;
-  #canvas;
   #selected;
-  #visible;
+  #hidden;
   #locked;
-  constructor(name, canvas) {
+  constructor({
+    name,
+    tiles = [],
+    selected = false,
+    hidden = false,
+    locked = false,
+  } = {}) {
     if (name === undefined) throw new Error("Layer name is undefined");
     if (typeof name !== "string") throw new Error("Layer name is not a string");
 
-    if (canvas === undefined) throw new Error("Layer canvas is undefined");
-    if (!(canvas instanceof Canvas))
-      throw new Error("Layer canvas is not a Canvas instance");
-
     this.#name = name;
-    this.#tiles = [];
+    this.#tiles = tiles;
 
-    this.#canvas = canvas;
-
-    this.#selected = false;
-    this.#visible = true;
-    this.#locked = false;
+    this.#selected = selected;
+    this.#hidden = hidden;
+    this.#locked = locked;
   }
 
   get name() {
@@ -43,52 +40,23 @@ export default class Layer {
     return this.#selected;
   }
 
-  set selected(value) {
-    if (typeof value !== "boolean") throw new Error("Value is not a boolean");
-    this.#selected = value;
+  set selected(isSelected) {
+    this.#selected = isSelected;
   }
 
-  get visible() {
-    return this.#visible;
+  get hidden() {
+    return this.#hidden;
   }
 
-  set visible(value) {
-    if (typeof value !== "boolean") throw new Error("Value is not a boolean");
-    this.#visible = value;
+  set hidden(isHidden) {
+    this.#hidden = isHidden;
   }
 
   get locked() {
     return this.#locked;
   }
 
-  set locked(value) {
-    if (typeof value !== "boolean") throw new Error("Value is not a boolean");
-    this.#locked = value;
-  }
-
-  toggleSelected() {
-    if (!this.#locked) {
-      this.#selected = !this.#selected;
-      this.#selected
-        ? (this.#canvas.layer = this)
-        : (this.#canvas.layer = null);
-    }
-  }
-
-  toggleVisibility() {
-    this.#visible = !this.#visible;
-  }
-
-  toggleLock() {
-    this.#locked = !this.#locked;
-  }
-
-  getData() {
-    return {
-      name: this.#name,
-      tiles: [...this.#tiles].map((tile) => tile.getData()),
-      visible: this.#visible,
-      locked: this.#locked,
-    };
+  set locked(isLocked) {
+    this.#locked = isLocked;
   }
 }
