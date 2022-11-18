@@ -14,13 +14,21 @@ export default class Fill extends Tool {
         const foundedTile = canvas.layer.tiles.some((t) => {
           return t.x === x && t.y === y;
         });
-        if (!foundedTile) {
+        if (
+          !foundedTile &&
+          x >= 0 &&
+          y >= 0 &&
+          x < canvas.width &&
+          y < canvas.height
+        ) {
           const tileInstance = new Tile({ x, y, color });
           canvas.layer.tiles.push(tileInstance);
           fill(x + 1, y);
           fill(x - 1, y);
           fill(x, y + 1);
           fill(x, y - 1);
+        } else {
+          return;
         }
       };
       fill(initialX, initialY);
