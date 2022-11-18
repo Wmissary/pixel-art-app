@@ -9,9 +9,9 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | Features | Status | Description | Note |
 | ----------- | ----------- | ----------- | ----------- |
 | Select canvas size | :x: | | |
-| Draw | MVF | Draw pixel on canvas | Click on brush icon to select draw mode |
-| Erase | MVF | Erase pixel on canvas | Click on rubber icon to select erase mode |
-| Fill | :x: | Fill pixel on canvas ||
+| Draw | MVF | Draw pixel on canvas | Click on brush icon to select pencil tool |
+| Erase | MVF | Erase pixel on canvas | Click on rubber icon to select eraser tool |
+| Fill | MVF | Fill pixel on canvas | Click fill icon to select fill tool|
 | Clear | MVF | Clear canvas | Will Clear all unlocked canvas layer |
 | Layers| MVF | Add layers management | Add Layer, Select Layer, Hide layer, Lock Layer and Delete layer |
 | Undo | :x: | Undo last action ||
@@ -31,5 +31,5 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 
 Go to => [pixel-app](https://wmissary.github.io/pixel-art-app/)
 
-Select your tool, pick your colour, select your layer by clicking on layer name and start drawing!
+Select your tool, pick your colour, select your layer by clicking on checkbox and start drawing!
 (Use the mouse wheel click to clear all unlocked layers)Select a color from the palette
