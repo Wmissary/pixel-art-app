@@ -6,7 +6,7 @@ function loadCanvasDataFromStorage() {
 }
 
 function saveCanvasDataToStorage(storage, canvas) {
-  console.log(canvas.colors);
+  console.log(canvas);
   const data = {
     layers: [...canvas.layers].map((layer) => {
       return {

@@ -41,6 +41,7 @@ function addLayerEventListener({ button, container, canvas }) {
       layer,
       canvas,
     });
+    saveCanvasDataToStorage("local", canvas);
   });
 }
 

@@ -16,13 +16,13 @@ function addColorEventListener({ button, container, colorInput, canvas }) {
     canvas.colors.add(color);
     selectColorEventListener({ colorDiv, colorInput });
     deleteColorEventListener({ colorDiv, canvas });
+    saveCanvasDataToStorage("local", canvas);
   });
 }
 
 function selectColorEventListener({ colorDiv, colorInput }) {
-  colorDiv.addEventListener("click", (event) => {
-    if (event.buttons === 1)
-      colorInput.value = rgbToHex(colorDiv.style.backgroundColor);
+  colorDiv.addEventListener("click", () => {
+    colorInput.value = rgbToHex(colorDiv.style.backgroundColor);
   });
 }
 

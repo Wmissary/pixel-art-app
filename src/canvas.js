@@ -1,3 +1,5 @@
+import { saveCanvasDataToStorage } from "./storage.js";
+
 function clickOnCanvasEventListener(canvas, colorInput) {
   canvas.element.addEventListener("mousedown", (e) => {
     if (e.buttons === 1) {
@@ -23,6 +25,7 @@ function clickOnCanvasEventListener(canvas, colorInput) {
   });
   document.addEventListener("mouseup", () => {
     canvas.click = false;
+    saveCanvasDataToStorage("local", canvas);
   });
 }
 
