@@ -48,6 +48,12 @@ export default class Canvas {
   get element() {
     return this.#element;
   }
+  get width() {
+    return this.#width;
+  }
+  get height() {
+    return this.#height;
+  }
   get tools() {
     return this.#tools;
   }

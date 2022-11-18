@@ -16,12 +16,12 @@ import {
 } from "./src/color.js";
 import { selectToolEventListener } from "./src/tool.js";
 
-import { Pencil, Eraser } from "./src/tools/index.js";
+import { Pencil, Eraser, Fill } from "./src/tools/index.js";
 import { clickOnCanvasEventListener } from "./src/canvas.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Init Tools
-  const tools = [new Pencil("pencil"), new Eraser("eraser")];
+  const tools = [new Pencil("pencil"), new Eraser("eraser"), new Fill("fill")];
   // Get data from storage
   const { layers = [], colors = [] } = loadCanvasDataFromStorage() ?? {
     layers: [],

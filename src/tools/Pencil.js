@@ -7,15 +7,16 @@ export default class Pencil extends Tool {
   }
   do({ event, canvas, color }) {
     const { x, y } = canvas.getGridPosition(event);
-    const tileInstance = new Tile({ x, y, color });
     if (canvas.layer !== null) {
       const foundedTile = canvas.layer.tiles.some((t) => {
-        return t.x === tileInstance.x && t.y === tileInstance.y;
+        return t.x === x && t.y === y;
       });
-      if (!foundedTile) canvas.layer.tiles.push(tileInstance);
-      else {
+      if (!foundedTile) {
+        const tileInstance = new Tile({ x, y, color });
+        canvas.layer.tiles.push(tileInstance);
+      } else {
         const tile = canvas.layer.tiles.find((t) => {
-          return t.x === tileInstance.x && t.y === tileInstance.y;
+          return t.x === x && t.y === y;
         });
         tile.color = color;
       }
