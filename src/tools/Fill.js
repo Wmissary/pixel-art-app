@@ -7,9 +7,8 @@ export default class Fill extends Tool {
   }
   do({ event, canvas, color }) {
     if (canvas.layer !== null) {
-      const gridObject = canvas.getGridPosition(event);
-      const initialX = gridObject.x;
-      const initialY = gridObject.y;
+      const { x, y } = canvas.getGridPosition(event);
+
       const fill = (x, y) => {
         const foundedTile = canvas.layer.tiles.some((t) => {
           return t.x === x && t.y === y;
@@ -31,7 +30,7 @@ export default class Fill extends Tool {
           return;
         }
       };
-      fill(initialX, initialY);
+      fill(x, y);
     }
   }
 }
