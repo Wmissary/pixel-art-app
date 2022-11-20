@@ -22,8 +22,8 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | New | :x: | Create new canvas ||
 | Export to PNG | :x: | Export canvas to PNG ||
 | Export to SVG | :x: | Export canvas to SVG ||
-| Save | :x: | Save canvas ||
-| Load | :x: | Load canvas ||
+| Save | MVF | Save canvas | Automatic canvas save on local storage for the moment|
+| Load | MVF | Load canvas | Automatic load for the moment |
 | Color palette | MVF | select color | Rework needed when favorite color management is done |
 | Favorite color | MVF | Add or Delete color from favorite | Clic on add button to add current color to favorite or right click on it to delete it |
 
