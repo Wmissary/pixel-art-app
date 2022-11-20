@@ -20,7 +20,7 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | Rotate | :x: | Rotate canvas ||
 | Zoom | :x: | Zoom canvas ||
 | New | :x: | Create new canvas ||
-| Export to PNG | :x: | Export canvas to PNG ||
+| Export to PNG | :white_check_mark: | Export canvas to PNG ||
 | Export to SVG | :x: | Export canvas to SVG ||
 | Save | MVF | Save canvas | Automatic canvas save on local storage for the moment|
 | Load | MVF | Load canvas | Automatic load for the moment |
@@ -32,4 +32,5 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 Go to => [pixel-app](https://wmissary.github.io/pixel-art-app/)
 
 Select your tool, pick your colour, select your layer by clicking on checkbox and start drawing!
-(Use the mouse wheel click to clear all unlocked layers)Select a color from the palette
+(Use the mouse wheel click to clear all unlocked layers)
+You can export it to PNG!
