@@ -18,6 +18,7 @@ import { selectToolEventListener } from "./src/tool.js";
 
 import { Pencil, Eraser, Fill, ColorPick } from "./src/tools/index.js";
 import { clickOnCanvasEventListener } from "./src/canvas.js";
+import { exportToPngEventListener } from "./src/export.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Init Tools
@@ -112,4 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // add EventListeners to Canvas
   clickOnCanvasEventListener(canvas, colorInput, colors);
+
+  // add EventListeners to Export Buttons
+  exportToPngEventListener(canvas);
 });
