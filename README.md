@@ -8,7 +8,7 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 
 | Features | Status | Description | Note |
 | ----------- | ----------- | ----------- | ----------- |
-| Select canvas size | :x: | | |
+| Select canvas size | MVF | Ask user for canvas width and height | |
 | Draw | MVF | Draw pixel on canvas | Click on brush icon to select pencil tool |
 | Erase | MVF | Erase pixel on canvas | Click on rubber icon to select eraser tool |
 | Fill | MVF | Fill pixel on canvas | Click on fill icon to select fill tool|
