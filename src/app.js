@@ -2,11 +2,13 @@ import Layer from "./classes/Layer.js";
 import Tile from "./classes/Tile.js";
 import Canvas from "./classes/Canvas.js";
 
-function initApp({ layers, tools, canvasElement, colors }) {
+function initApp({ layers, tools, canvasElement, colors, width, height }) {
   if (tools === undefined) throw new Error("Tools are undefined");
   const kSetLayers = new Set();
   const kSetColors = new Set(colors);
   const kSetTools = new Set(tools);
+  canvasElement.width = width;
+  canvasElement.height = height;
 
   if (layers.length !== 0) {
     // Create layers from storage data and add them to the layers set

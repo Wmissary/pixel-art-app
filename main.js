@@ -29,16 +29,37 @@ document.addEventListener("DOMContentLoaded", () => {
     new ColorPick("colorPick", document.querySelector("#color")),
   ];
   // Get data from storage
-  const { layers = [], colors = [] } = loadCanvasDataFromStorage() ?? {
-    layers: [],
-    colors: [],
-  };
+
+  const { layers, colors, size } = loadCanvasDataFromStorage();
+
+  // Ask for pixel art s
+  function askDimension() {
+    const widthAnswer = prompt("Enter the width of the pixel art");
+    const heightAnswer = prompt("Enter the height of the pixel art");
+    if (widthAnswer === null || heightAnswer === null) {
+      alert("Invalid dimension");
+      return askDimension();
+    }
+    if (isNaN(widthAnswer) || isNaN(heightAnswer)) {
+      alert("Invalid dimension");
+      return askDimension();
+    }
+    if (widthAnswer < 1 || heightAnswer < 1) {
+      alert("Invalid dimension");
+      return askDimension();
+    }
+    return { width: widthAnswer, height: heightAnswer };
+  }
+
+  const { width, height } = size ?? askDimension();
 
   // Init app
   const canvas = initApp({
     layers,
     tools,
     colors,
+    width,
+    height,
     canvasElement: document.getElementById("canvas"),
   });
 

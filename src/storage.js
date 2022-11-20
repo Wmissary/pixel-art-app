@@ -2,7 +2,11 @@ function loadCanvasDataFromStorage() {
   const data =
     sessionStorage.getItem("canvas") ?? localStorage.getItem("canvas");
   if (data !== null) return JSON.parse(data);
-  return null;
+  return {
+    layers: [],
+    colors: [],
+    dimension: undefined,
+  };
 }
 
 function saveCanvasDataToStorage(storage, canvas) {
@@ -22,6 +26,10 @@ function saveCanvasDataToStorage(storage, canvas) {
       };
     }),
     colors: [...canvas.colors],
+    size: {
+      width: canvas.width,
+      height: canvas.height,
+    },
   };
 
   const dataString = JSON.stringify(data);
