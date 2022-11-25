@@ -94,6 +94,7 @@ header {
 main {
   position: relative;
   height: calc(100vh - 35px);
+  overflow: hidden;
 }
 
 #canvas-container {
