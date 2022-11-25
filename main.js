@@ -183,4 +183,13 @@ document.addEventListener("DOMContentLoaded", () => {
       matrix.f
     }px) scale(${Math.round((matrix.a * zoom + Number.EPSILON) * 10) / 10})`;
   });
+
+  // add EventListeners to new button
+  const newBtn = document.getElementById("new");
+  newBtn.addEventListener("click", () => {
+    // clear local storage
+    localStorage.clear();
+    // reload page
+    window.location.reload();
+  });
 });
