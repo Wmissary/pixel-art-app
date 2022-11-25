@@ -147,11 +147,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastX = 0;
   let lastY = 0;
   canvasContainer.addEventListener("mousedown", (e) => {
-    if (e.buttons !== 4) return;
+    if (e.buttons !== 2) return;
     isDragging = true;
     lastX = e.clientX;
     lastY = e.clientY;
   });
+
+  // disable mouse context menu on container
+  canvasContainer.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
+
   canvasContainer.addEventListener("mousemove", (e) => {
     if (!isDragging) return;
     const style = getComputedStyle(canvas.element);
