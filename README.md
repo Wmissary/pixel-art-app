@@ -18,7 +18,8 @@ Pixel craft is a Pixel Art creator for the web in vanilla JavaScript.
 | Undo | :x: | Undo last action ||
 | Redo | :x: | Redo last action ||
 | Rotate | :x: | Rotate canvas ||
-| Zoom | :x: | Zoom canvas ||
+| Zoom | MVF | Zoom canvas | Use mouse wheel to zoom or unzoom canvas|
+| Translate | MVF | Translate canvas | Use right click to translate canvas |
 | New | :x: | Create new canvas ||
 | Export to PNG | :white_check_mark: | Export canvas to PNG ||
 | Export to SVG | :x: | Export canvas to SVG ||
